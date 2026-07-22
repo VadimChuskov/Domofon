@@ -5,6 +5,7 @@
 #include "led.h"
 #include "wifi.h"
 #include "telegram_bot.h"
+#include "gpio_out.h"
 
 static const char *TAG = "Domofon";
 static const int INTERRUPT_DELAY_MS = 10000;
@@ -18,6 +19,7 @@ extern "C" void app_main(void)
     initialize_led();
     initialize_wifi();
     initialize_gpio_interrupt(gpio_interrupt_callback);
+    initialize_gpio_output(GPIO_NUM_33);
 
     while (1)
     {
