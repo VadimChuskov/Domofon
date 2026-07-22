@@ -293,6 +293,7 @@ static void wifi_event_handler(void *arg, esp_event_base_t event_base,
     if (event_base == WIFI_EVENT && event_id == WIFI_EVENT_STA_START) {
         esp_wifi_connect();
     } else if (event_base == WIFI_EVENT && event_id == WIFI_EVENT_STA_DISCONNECTED) {
+        xEventGroupClearBits(s_wifi_event_group, WIFI_CONNECTED_BIT);
         if (s_retry_count < WIFI_STA_MAX_RETRY) {
             s_retry_count++;
             ESP_LOGW(TAG, "Retrying connection (%d/%d)...", s_retry_count, WIFI_STA_MAX_RETRY);
@@ -422,4 +423,10 @@ void initialize_wifi(void)
     xTaskCreate(wifi_task, "wifi_task", 4096, NULL, 5, NULL);
 
     ESP_LOGI(TAG, "Wi-Fi module initialized");
+}
+
+void wifi_wait_connected(void)
+{
+    xEventGroupWaitBits(s_wifi_event_group, WIFI_CONNECTED_BIT,
+                        pdFALSE, pdFALSE, portMAX_DELAY);
 }

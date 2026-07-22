@@ -19,5 +19,6 @@
 #define WIFI_BLINK_PERIOD  200
 //-------------------------------------------------------------
 void initialize_wifi(void);
+void wifi_wait_connected(void);
 //-------------------------------------------------------------
 #endif /* WIFI_H_ */
